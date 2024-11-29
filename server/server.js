@@ -12,6 +12,11 @@ app.use(express.json());
 app.use(cors());
 app.use(express.static("public"));
 
+// Root route
+app.get("/", (req, res) => {
+  res.send("Server is running!");
+});
+
 // Routes
 app.use("/auth", authRoutes);
 app.use("/listing", listingRoutes);
@@ -19,9 +24,15 @@ app.use("/bookings", bookingRoutes);
 app.use("/users", userRoutes);
 
 // MongoDB connection
-const PORT = 4000;
+const PORT = process.env.PORT || 4000;
 const connectDB = async () => {
-  await mongoose.connect(process.env.MONGODB_URL).then(() => console.log("Database connected"));
+  try {
+    await mongoose.connect(process.env.MONGODB_URL);
+    console.log("Database connected");
+  } catch (err) {
+    console.error("Database connection error:", err);
+    process.exit(1);
+  }
 };
 connectDB();
 
