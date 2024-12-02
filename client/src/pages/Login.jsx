@@ -10,21 +10,28 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/login`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email, password }) });
-      if (!response.ok) {
-        const errorData = await response.json();
-        console.error("Login failed", errorData.message);
-        alert("Login failed: " + errorData.message);
-        return;
-      }
+      const response = await fetch("http://localhost:4000/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      // Get data after fetching
       const loggedIn = await response.json();
+
       if (loggedIn) {
-        dispatch(setLogin({ user: loggedIn.user, token: loggedIn.token }));
+        dispatch(
+          setLogin({
+            user: loggedIn.user,
+            token: loggedIn.token,
+          })
+        );
         navigate("/");
       }
     } catch (err) {
       console.log("Login failed", err.message);
-      alert("Login failed. Please check your credentials and try again.");
     }
   };
 

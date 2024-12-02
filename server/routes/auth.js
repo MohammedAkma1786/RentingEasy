@@ -71,23 +71,21 @@ router.post("/login", async (req, res) => {
     // check if user exists
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(400).json({ message: "User doesn't exist!" });
+      return res.status(400).json({ message: "User doesn't exists!" });
     }
-
     // Compare the password with the hashed password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ message: "Invalid credentials!" });
+      return res.status(400).json({ message: "Invalid Credentials!" });
     }
 
     // Generate JWT token
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-    const userWithoutPassword = user.toObject();
-    delete userWithoutPassword.password;
+    delete user.password;
 
-    res.status(200).json({ token, user: userWithoutPassword });
+    res.status(200).json({ token, user });
   } catch (err) {
-    console.log("Server error:", err);
+    console.log(err);
     res.status(500).json({ error: err.message });
   }
 });
