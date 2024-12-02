@@ -56,14 +56,10 @@ router.post("/register", upload.single("profileImage"), async (req, res) => {
     await newUser.save();
 
     // Send a successfull response
-    res
-      .status(200)
-      .json({ message: "User registered successfully", user: newUser });
+    res.status(200).json({ message: "User registered successfully", user: newUser });
   } catch (err) {
     console.log(err);
-    res
-      .status(500)
-      .json({ message: "Registration failed", error: err.message });
+    res.status(500).json({ message: "Registration failed", error: err.message });
   }
 });
 
@@ -75,21 +71,23 @@ router.post("/login", async (req, res) => {
     // check if user exists
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(400).json({ message: "User doesn't exists!" });
+      return res.status(400).json({ message: "User doesn't exist!" });
     }
+
     // Compare the password with the hashed password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ message: "Invalid Credentials!" });
+      return res.status(400).json({ message: "Invalid credentials!" });
     }
 
     // Generate JWT token
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-    delete user.password;
+    const userWithoutPassword = user.toObject();
+    delete userWithoutPassword.password;
 
-    res.status(200).json({ token, user });
+    res.status(200).json({ token, user: userWithoutPassword });
   } catch (err) {
-    console.log(err);
+    console.log("Server error:", err);
     res.status(500).json({ error: err.message });
   }
 });

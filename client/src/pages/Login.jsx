@@ -2,38 +2,29 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { setLogin } from "../redux/state";
-
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:4000/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      // Get data after fetching
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/login`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email, password }) });
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Login failed", errorData.message);
+        alert("Login failed: " + errorData.message);
+        return;
+      }
       const loggedIn = await response.json();
-
       if (loggedIn) {
-        dispatch(
-          setLogin({
-            user: loggedIn.user,
-            token: loggedIn.token,
-          })
-        );
+        dispatch(setLogin({ user: loggedIn.user, token: loggedIn.token }));
         navigate("/");
       }
     } catch (err) {
       console.log("Login failed", err.message);
+      alert("Login failed. Please check your credentials and try again.");
     }
   };
 
@@ -45,7 +36,6 @@ const Login = () => {
           className="flex flex-col gap-y-2 bg-white w-[366px] p-7 rounded-xl shadow-md text-[14px]">
           <div className="flex justify-between items-baseline my-4">
             <h4 className="bold-28">{"Login"}</h4>
-            {/* <FaXmark onClick={() => setShowLogin(false)} className='medium-20 text-slate-900/70 cursor-pointer' /> */}
           </div>
           <input
             onChange={(e) => setEmail(e.target.value)}
@@ -63,7 +53,7 @@ const Login = () => {
             value={password}
             placeholder="Password"
             required
-            className="bg-primary  text-secondary border p-2 pl-4 rounded-md outline-none"
+            className="bg-primary text-secondary border p-2 pl-4 rounded-md outline-none"
           />
           <button
             type="submit"
@@ -71,7 +61,7 @@ const Login = () => {
             Login
           </button>
           <div className="text-gray-30">
-            Don't have an account?{" "}
+            Don't have an account?
             <Link
               to={"/register"}
               className="text-white bg-primary/40 rounded-md p-1 cursor-pointer">
@@ -83,5 +73,4 @@ const Login = () => {
     </div>
   );
 };
-
 export default Login;
