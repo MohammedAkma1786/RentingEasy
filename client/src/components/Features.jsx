@@ -5,7 +5,7 @@ import { GrCertificate } from "react-icons/gr";
 
 const Features = () => {
   return (
-    <section className="max-padd-container py-15 xl:py-32 bg-background">
+    <section className="max-padd-container py-8  xl:py-32 bg-background">
       {/* Title */}
       <div className="text-center pb-16">
         <h6 className="text-sun-yellow font-bold uppercase">Few steps to Your New Home</h6>
