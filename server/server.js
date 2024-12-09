@@ -2,6 +2,8 @@ import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import "dotenv/config";
+import path from "path"
+import favicon from "serve-favicon"
 import authRoutes from "./routes/auth.js";
 import listingRoutes from "./routes/listing.js";
 import bookingRoutes from "./routes/booking.js";
@@ -11,6 +13,9 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 app.use(express.static("public"));
+
+const faviconPath =path.join(__dirname, "publix", "favicon.ico" );
+app.use(favicon(faviconPath))
 
 // Root route
 app.get("/", (req, res) => {
