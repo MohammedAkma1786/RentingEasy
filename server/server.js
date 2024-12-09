@@ -3,6 +3,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import "dotenv/config";
 import path from "path"
+import { fileURLToPath } from "url";
 import favicon from "serve-favicon"
 import authRoutes from "./routes/auth.js";
 import listingRoutes from "./routes/listing.js";
@@ -14,8 +15,11 @@ app.use(express.json());
 app.use(cors());
 app.use(express.static("public"));
 
-const faviconPath =path.join(__dirname, "publix", "favicon.ico" );
-app.use(favicon(faviconPath))
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const faviconPath = path.join(__dirname, "public", "favicon.ico");
+app.use(favicon(faviconPath));
 
 // Root route
 app.get("/", (req, res) => {
