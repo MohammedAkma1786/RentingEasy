@@ -1,12 +1,11 @@
 {
   "version": 2,
-  "routes": [
+  "builds": [
     {
-      "src": "/(.*)",
-      "dest": "/client/dist/index.html"
+      "src": "client/package.json",
+      "use": "@vercel/static-build",
+      "config": { "distDir": "client/dist" }
     }
   ],
-  "env": {
-    "PREBUILD_SCRIPT": "chmod +x ./node_modules/.bin/vite && npm install"
-  }
+  "routes": [{ "src": "/(.*)", "dest": "client/$1" }]
 }
