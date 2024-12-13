@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 2,
   "builds": [
     {
       "src": "package.json",
@@ -17,14 +17,5 @@
       "src": "/(.*)",
       "dest": "/index.html"
     }
-  ],
-  "settings": {
-    "framework": "vite",
-    "devCommand": "vite",
-    "installCommand": "npm install",
-    "buildCommand": "npm run build",
-    "outputDirectory": "dist",
-    "rootDirectory": "client",
-    "nodeVersion": "22.x"
-  }
+  ]
 }
