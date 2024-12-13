@@ -1,11 +1,30 @@
 {
-  "version": 2,
+  "version": 3,
   "builds": [
     {
       "src": "package.json",
       "use": "@vercel/static-build",
-      "config": { "distDir": "dist" }
+      "config": {
+        "distDir": "dist"
+      }
     }
   ],
-  "routes": [{ "src": "/(.*)", "dest": "/" }]
+  "routes": [
+    {
+      "handle": "error"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ],
+  "settings": {
+    "framework": "vite",
+    "devCommand": "vite",
+    "installCommand": "npm install",
+    "buildCommand": "npm run build",
+    "outputDirectory": "dist",
+    "rootDirectory": "client",
+    "nodeVersion": "22.x"
+  }
 }
