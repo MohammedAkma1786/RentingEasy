@@ -5,8 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "fix-permissions": "chmod -R 755 node_modules/.bin || true",
-    "build": "npm run fix-permissions && vite build",
+    "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
