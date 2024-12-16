@@ -1,19 +1,13 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  root: "src", // Specify the root directory
   build: {
+    outDir: "../dist", // Output directory for build files
     rollupOptions: {
-      output: {
-        manualChunks(id) {
-          if (id.includes("node_modules")) {
-            return "vendor";
-          }
-        },
-      },
+      input: "src/index.html", // Specify the entry point
     },
-    chunkSizeWarningLimit: 1000,
   },
 });
