@@ -56,10 +56,14 @@ router.post("/register", upload.single("profileImage"), async (req, res) => {
     await newUser.save();
 
     // Send a successfull response
-    res.status(200).json({ message: "User registered successfully", user: newUser });
+    res
+      .status(200)
+      .json({ message: "User registered successfully", user: newUser });
   } catch (err) {
     console.log(err);
-    res.status(500).json({ message: "Registration failed", error: err.message });
+    res
+      .status(500)
+      .json({ message: "Registration failed", error: err.message });
   }
 });
 

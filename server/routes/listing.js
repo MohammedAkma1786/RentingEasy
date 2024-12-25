@@ -21,7 +21,24 @@ const upload = multer({ storage });
 // CREATE LISTING
 router.post("/create", upload.array("listingPhotos"), async (req, res) => {
   try {
-    const { creator, category, type, streetAddress, aptSuite, city, province, country, guestCount, bedroomCount, bedCount, bathroomCount, amenities, title, description, price } = req.body;
+    const {
+      creator,
+      category,
+      type,
+      streetAddress,
+      aptSuite,
+      city,
+      province,
+      country,
+      guestCount,
+      bedroomCount,
+      bedCount,
+      bathroomCount,
+      amenities,
+      title,
+      description,
+      price,
+    } = req.body;
 
     const listingPhotos = req.files;
 
@@ -54,7 +71,9 @@ router.post("/create", upload.array("listingPhotos"), async (req, res) => {
     await newListing.save();
     res.status(200).json(newListing);
   } catch (err) {
-    res.status(409).json({ message: "Failed to create listing", error: err.message });
+    res
+      .status(409)
+      .json({ message: "Failed to create listing", error: err.message });
     console.error(err);
   }
 });
@@ -65,13 +84,17 @@ router.get("/", async (req, res) => {
   try {
     let listings;
     if (qCategory) {
-      listings = await Listing.find({ category: qCategory }).populate("creator");
+      listings = await Listing.find({ category: qCategory }).populate(
+        "creator"
+      );
     } else {
       listings = await Listing.find().populate("creator");
     }
     res.status(200).json(listings);
   } catch (err) {
-    res.status(404).json({ message: "Failed to fetch listings", error: err.message });
+    res
+      .status(404)
+      .json({ message: "Failed to fetch listings", error: err.message });
     console.error(err);
   }
 });
@@ -85,12 +108,17 @@ router.get("/search/:search", async (req, res) => {
       listings = await Listing.find().populate("creator");
     } else {
       listings = await Listing.find({
-        $or: [{ category: { $regex: search, $options: "i" } }, { title: { $regex: search, $options: "i" } }],
+        $or: [
+          { category: { $regex: search, $options: "i" } },
+          { title: { $regex: search, $options: "i" } },
+        ],
       }).populate("creator");
     }
     res.status(200).json(listings);
   } catch (err) {
-    res.status(404).json({ message: "Failed to fetch listings", error: err.message });
+    res
+      .status(404)
+      .json({ message: "Failed to fetch listings", error: err.message });
     console.error(err);
   }
 });
@@ -109,7 +137,9 @@ router.get("/:listingId", async (req, res) => {
     }
     res.status(200).json(listing);
   } catch (err) {
-    res.status(500).json({ message: "Failed to fetch listing details", error: err.message });
+    res
+      .status(500)
+      .json({ message: "Failed to fetch listing details", error: err.message });
     console.error(err);
   }
 });

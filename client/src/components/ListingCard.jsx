@@ -6,13 +6,32 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setWishList } from "../redux/state";
 
-const ListingCard = ({ listingId, creator, listingPhotoPaths, city, province, country, category, type, price, title, description, startDate, endDate, totalPrice, booking }) => {
+const ListingCard = ({
+  listingId,
+  creator,
+  listingPhotoPaths,
+  city,
+  province,
+  country,
+  category,
+  type,
+  price,
+  title,
+  description,
+  startDate,
+  endDate,
+  totalPrice,
+  booking,
+}) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const goToPrevSlide = () => {
-    setCurrentIndex((prevIndex) => (prevIndex - 1 + listingPhotoPaths.length) % listingPhotoPaths.length);
+    setCurrentIndex(
+      (prevIndex) =>
+        (prevIndex - 1 + listingPhotoPaths.length) % listingPhotoPaths.length
+    );
   };
 
   const goToNextSlide = () => {
@@ -27,12 +46,15 @@ const ListingCard = ({ listingId, creator, listingPhotoPaths, city, province, co
 
   const patchWishList = async () => {
     if (user?._id !== creator._id) {
-      const response = await fetch(`http://localhost:4000/users/${user?._id}/${listingId}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `http://localhost:4000/users/${user?._id}/${listingId}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       const data = await response.json();
       dispatch(setWishList(data.wishList));
     } else {
@@ -45,16 +67,19 @@ const ListingCard = ({ listingId, creator, listingPhotoPaths, city, province, co
       onClick={() => {
         navigate(`/listing/${listingId}`);
       }}
-      className="grid grid-cols-1 xl:grid-cols-1 gap-6 place-items-center ring-1 ring-slate-900/5 bg-white cursor-pointer p-2.5 rounded-[2.5rem] relative group">
+      className="grid grid-cols-1 xl:grid-cols-1 gap-6 place-items-center ring-1 ring-slate-900/5 bg-white cursor-pointer p-2.5 rounded-[2.5rem] relative group"
+    >
       {/* Image */}
       <div className="overflow-hidden relative">
         <div
           className="flex"
-          style={{ transform: `translateX(-${currentIndex * 100}%)` }}>
+          style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+        >
           {listingPhotoPaths?.map((photo, i) => (
             <div
               key={i}
-              className="relative flex-none w-full h-[266px] items-center">
+              className="relative flex-none w-full h-[266px] items-center"
+            >
               <img
                 src={`http://localhost:4000/${photo.replace("public", "")}`}
                 alt={`photo ${i + 1}`}
@@ -91,8 +116,13 @@ const ListingCard = ({ listingId, creator, listingPhotoPaths, city, province, co
             patchWishList();
           }}
           disabled={!user}
-          className="absolute top-3 right-5 border border-white h-7 w-7 rounded-full flexCenter">
-          {isLiked ? <GoHeartFill className="text-white text-lg" /> : <GoHeart className="text-white text-lg" />}
+          className="absolute top-3 right-5 border border-white h-7 w-7 rounded-full flexCenter"
+        >
+          {isLiked ? (
+            <GoHeartFill className="text-white text-lg" />
+          ) : (
+            <GoHeart className="text-white text-lg" />
+          )}
         </button>
       </div>
       {/* Title Desc */}
